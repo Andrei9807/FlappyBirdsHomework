@@ -4,10 +4,12 @@
 #include <unistd.h>
 using namespace std;
 bool gameOver;
-const int width = 35;
+const int width = 50;
 const int height = 20;
-int x, y, powerUPx,powerUPy, score=0,wallY,temporalCreativ=width/2+10,temporalDistructiv=-5,time=0;
+int x, y, powerUPx,powerUPy, score=0,wallY,temporalCreativ=width/2+10,temporalDistructiv=-5,time=0,nimic=0;
 int wallYhole=2+rand()%((height-1-2)+1);
+int inPillar1=2+rand()%((height-1-2)+1);
+int inPillar2=2+rand()%((height-1-2)+1);
 enum birdDirection { STOP = 0 , UP , DOWN };
 birdDirection dir;
 void Setup()
@@ -16,18 +18,20 @@ void Setup()
     dir = DOWN;
     x = width/2-5;
     y = height/2-5;
-    powerUPx= rand()%width;
-    powerUPy= rand()%height;
+    powerUPx= width/2-5;
+    powerUPy= 2+rand()%((height-1-2)+1);
     score = 0;
 }
 void Tempo()
 {  time++;
-    if(time==width/2+11)
+    if(time==width/4+width/2+1)
     {
         temporalCreativ=width/2+10;
         temporalDistructiv=-5;
         time=0;
         wallYhole=2+rand()%((height-1-2)+1);
+        inPillar1=2+rand()%((height-1-2)+1);
+        inPillar2=2+rand()%((height-1-2)+1);
 
     }
     temporalCreativ--;
@@ -39,7 +43,6 @@ void Draw()
     for (int i=0; i < width; i++)
         cout<< "#";
     cout<<endl;
-
     for(int i=0; i < height ;i++)
     {
        wallY=i;
@@ -48,26 +51,51 @@ void Draw()
 
             if(j==0)
                 cout<<" ";
-            if(wallYhole==wallY || wallYhole==wallY+1 || wallYhole==wallY-1)
+                if(i==y && j==x)
+                {cout<< "O";
                 goto jump;
+                }
+                 if(i==powerUPy && j==powerUPx)
+                {cout<<"*";
+                goto jump;}
+
+
             if(j==temporalCreativ-temporalDistructiv)
-                cout<<"#";
-             jump:
-
-            if(j==temporalCreativ-temporalDistructiv+14)
-                cout<<"#";
-
-            if(j==temporalCreativ-temporalDistructiv+28)
-                cout<<"#";
-
-            if(i==y && j==x)
-                cout<< "O";
-
-            //if(i==powerUPy && j==powerUPx)
-                //cout<<"*";
-           // else
+            {
+                if(wallYhole==wallY || wallYhole==wallY+1 || wallYhole==wallY-1)
                 cout<<" ";
+                else
+                cout<<"#";
+               goto jump;
+            }
 
+
+            if(j==temporalCreativ-temporalDistructiv+width-width/2)
+               {
+                if(inPillar1==i ||inPillar1==i+1 ||inPillar1==i-1)
+                  cout<<" ";
+
+                else
+                    cout<<"#";
+
+                goto jump;
+
+               }
+
+
+            if(j==temporalCreativ-temporalDistructiv+width)
+                {
+                    if(inPillar2==i || inPillar2==i+1 || inPillar2==i-1)
+                        cout<<" ";
+                    else
+                       cout<<"#";
+                    goto jump;
+
+                }
+
+                cout<<" ";
+         jump:
+             nimic++;
         }
         cout<<endl;
     }
@@ -111,11 +139,23 @@ void Logic()
     }
     if(y>height || y<0)
         gameOver=true;
+    if((y==wallYhole && x==temporalCreativ-temporalDistructiv) || (y==wallYhole+1 && x==temporalCreativ-temporalDistructiv)||(y==wallYhole-1 && x==temporalCreativ-temporalDistructiv))
+        score++;
+    if((y!=wallYhole && x==temporalCreativ-temporalDistructiv)&&(y!=wallYhole+1 && x==temporalCreativ-temporalDistructiv)&&(y!=wallYhole-1 && x==temporalCreativ-temporalDistructiv))
+        gameOver=true;
+    if((y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)||(y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)||(y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2))
+        score++;
+    if((y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)&&(y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)&&(y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2))
+       gameOver=true;
+    if((y==inPillar2 && x==temporalCreativ-temporalDistructiv+width)||(y==inPillar2-1 && x==temporalCreativ-temporalDistructiv+width)||(y==inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width))
+        score++;
+    if((y!=inPillar2 && x==temporalCreativ-temporalDistructiv+width)&&(y!=inPillar2-1 && x==temporalCreativ-temporalDistructiv+width)&&(y!=inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width))
+        gameOver=true;
 
     if(x == powerUPx && y == powerUPy)
     {
-    powerUPx= rand()%width;
-    powerUPy= rand()%height;
+    powerUPx= width/2-5;
+    powerUPy= 2+rand()%((height-1-2)+1);
     }
 }
 int main()
