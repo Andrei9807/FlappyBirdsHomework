@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <conio.h>
 #include <unistd.h>
+#include <fstream>
 using namespace std;
 bool gameOver;
 const int width = 50;
@@ -158,16 +159,77 @@ void Logic()
     powerUPy= 2+rand()%((height-1-2)+1);
     }
 }
-int main()
-{
-    Setup();
-    while(!gameOver)
+void Menu();
+void CheckScore()
+{   int scorMaxim;
+    ifstream f("scorMaxim.txt");
+    f>>scorMaxim;
+    f.close();
+    ofstream g("scorMaxim.txt");
+    if(score>scorMaxim)
+       {
+           scorMaxim=score;
+          g<<scorMaxim;
+       }
+       else
+       {
+           g<<scorMaxim;
+       }
+    g.close();
+    cout<<"Your highest score is: ";
+    cout<<scorMaxim;
+    cout<<endl;
+    cout<<"Going back to menu?[y/n]";
+    char caracter;
+    cin>>caracter;
+    if(caracter=='y')
+        Menu();
+
+    else
+        return;
+
+}
+void Menu()
+{   int tasta;
+    system("cls");
+    cout<<endl;
+    cout<<"Welcome"<<endl;
+    cout<<" M E N U:"<<endl<<endl;
+    cout<<"1.Start Game"<<endl<<endl;
+    cout<<"2.Check the HighScore"<<endl<<endl;
+    cout<<"3.Exit"<<endl<<endl;
+    cout<<"TIP: Please choose one option from above and hit ENTER"<<endl<<endl;
+    cout<<"Your choice: ";
+    cin>>tasta;
+    if(tasta==1)
     {
+        Setup();
+        while(!gameOver)
+       {
 
         Draw();
         Input();
         Logic();
         usleep(100000);
+       }
+       cout<<endl;
+       cout<<"Well played!"<<endl;
+       CheckScore();
     }
+    if(tasta==2)
+    {
+
+      CheckScore();
+
+    }
+    if(tasta==3)
+    {
+        return;
+    }
+
+}
+int main()
+{
+    Menu();
     return 0;
 }
