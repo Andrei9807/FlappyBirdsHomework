@@ -8,9 +8,9 @@ bool gameOver;
 const int width = 50;
 const int height = 20;
 int x, y, powerUPx,powerUPy, score=0,wallY,temporalCreativ=width/2+10,temporalDistructiv=-5,time=0,nimic=0;
-int wallYhole=2+rand()%((height-1-2)+1);
-int inPillar1=2+rand()%((height-1-2)+1);
-int inPillar2=2+rand()%((height-1-2)+1);
+int wallYhole=rand()%height+1;
+int inPillar1=rand()%height+1;
+int inPillar2=rand()%height+1;
 enum birdDirection { STOP = 0 , UP , DOWN };
 birdDirection dir;
 void Setup()
@@ -20,19 +20,19 @@ void Setup()
     x = width/2-5;
     y = height/2-5;
     powerUPx= width/2-5;
-    powerUPy= 2+rand()%((height-1-2)+1);
+    powerUPy=rand()%height+1;
     score = 0;
 }
 void Tempo()
 {  time++;
-    if(time==width/4+width/2+1)
+    if(time==width/4+width/2+5)
     {
         temporalCreativ=width/2+10;
         temporalDistructiv=-5;
         time=0;
-        wallYhole=2+rand()%((height-1-2)+1);
-        inPillar1=2+rand()%((height-1-2)+1);
-        inPillar2=2+rand()%((height-1-2)+1);
+        wallYhole=rand()%height+1;
+        inPillar1=rand()%height+1;
+        inPillar2=rand()%height+1;
 
     }
     temporalCreativ--;
@@ -71,7 +71,7 @@ void Draw()
             }
 
 
-            if(j==temporalCreativ-temporalDistructiv+width-width/2)
+           if(j==temporalCreativ-temporalDistructiv+width-height)
                {
                 if(inPillar1==i ||inPillar1==i+1 ||inPillar1==i-1)
                   cout<<" ";
@@ -84,7 +84,7 @@ void Draw()
                }
 
 
-            if(j==temporalCreativ-temporalDistructiv+width)
+            if(j==temporalCreativ-temporalDistructiv+width+10)
                 {
                     if(inPillar2==i || inPillar2==i+1 || inPillar2==i-1)
                         cout<<" ";
@@ -144,19 +144,19 @@ void Logic()
         score++;
     if((y!=wallYhole && x==temporalCreativ-temporalDistructiv)&&(y!=wallYhole+1 && x==temporalCreativ-temporalDistructiv)&&(y!=wallYhole-1 && x==temporalCreativ-temporalDistructiv))
         gameOver=true;
-    if((y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)||(y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)||(y==inPillar1 && x==temporalCreativ-temporalDistructiv+width/2))
+    if((y==inPillar1 && x==temporalCreativ-temporalDistructiv+width-height)||(y==inPillar1-1 && x==temporalCreativ-temporalDistructiv+width-height)||(y==inPillar1+1 && x==temporalCreativ-temporalDistructiv+width-height))
         score++;
-    if((y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)&&(y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2)&&(y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width/2))
+    if((y!=inPillar1 && x==temporalCreativ-temporalDistructiv+width-height)&&(y!=inPillar1-1 && x==temporalCreativ-temporalDistructiv+width-height)&&(y!=inPillar1+1 && x==temporalCreativ-temporalDistructiv+width-height))
        gameOver=true;
-    if((y==inPillar2 && x==temporalCreativ-temporalDistructiv+width)||(y==inPillar2-1 && x==temporalCreativ-temporalDistructiv+width)||(y==inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width))
+    if((y==inPillar2 && x==temporalCreativ-temporalDistructiv+width+10)||(y==inPillar2-1 && x==temporalCreativ-temporalDistructiv+width+10)||(y==inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width+10))
         score++;
-    if((y!=inPillar2 && x==temporalCreativ-temporalDistructiv+width)&&(y!=inPillar2-1 && x==temporalCreativ-temporalDistructiv+width)&&(y!=inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width))
+    if((y!=inPillar2 && x==temporalCreativ-temporalDistructiv+width+10)&&(y!=inPillar2-1 && x==temporalCreativ-temporalDistructiv+width+10)&&(y!=inPillar2+1 &&x==temporalCreativ-temporalDistructiv+width+10))
         gameOver=true;
 
     if(x == powerUPx && y == powerUPy)
     {
     powerUPx= width/2-5;
-    powerUPy= 2+rand()%((height-1-2)+1);
+    powerUPy=rand()%height+1;
     }
 }
 void Menu();
@@ -197,7 +197,8 @@ void Menu()
     cout<<" M E N U:"<<endl<<endl;
     cout<<"1.Start Game"<<endl<<endl;
     cout<<"2.Check the HighScore"<<endl<<endl;
-    cout<<"3.Exit"<<endl<<endl;
+    cout<<"3.How to play"<<endl<<endl;
+    cout<<"4.Exit"<<endl<<endl;
     cout<<"TIP: Please choose one option from above and hit ENTER"<<endl<<endl;
     cout<<"Your choice: ";
     cin>>tasta;
@@ -223,6 +224,19 @@ void Menu()
 
     }
     if(tasta==3)
+    {
+      cout<<"Press 'z' to fly , press 'x' to end the game";
+      cout<<endl;
+      cout<<"Going back to menu?[y/n]";
+      char caracter;
+      cin>>caracter;
+      if(caracter=='y')
+        Menu();
+
+    else
+        return;
+    }
+    if(tasta==4)
     {
         return;
     }
