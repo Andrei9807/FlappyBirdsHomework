@@ -22,6 +22,12 @@ void Setup()
     powerUPx= width/2-5;
     powerUPy=rand()%height+1;
     score = 0;
+    time=0;
+    wallYhole=rand()%height+1;
+    inPillar1=rand()%height+1;
+    inPillar2=rand()%height+1;
+    temporalCreativ=width/2+10;
+    temporalDistructiv=-5;
 }
 void Tempo()
 {  time++;
