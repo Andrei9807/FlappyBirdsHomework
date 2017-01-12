@@ -161,6 +161,7 @@ void Logic()
 
     if(x == powerUPx && y == powerUPy)
     {
+        score++;
     powerUPx= width/2-5;
     powerUPy=rand()%height+1;
     }
@@ -231,7 +232,9 @@ void Menu()
     }
     if(tasta==3)
     {
-      cout<<"Press 'z' to fly , press 'x' to end the game";
+      cout<<"Press 'z' to fly , press 'x' to end the game"<<endl;
+      cout<<"If you get the Power-Up , your score is increased by 1"<<endl;
+      cout<<"Don't hit the pillars, the ground, or the sky, this will kill you";
       cout<<endl;
       cout<<"Going back to menu?[y/n]";
       char caracter;
